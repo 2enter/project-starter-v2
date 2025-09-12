@@ -1,0 +1,4 @@
+[typescript.type_mappings]
+"Uuid" = "string"
+"DateTime" = "Date"
+"Bytes" = "Blob"
