@@ -14,8 +14,8 @@ pub struct Interaction {
     pub id: Uuid,
     pub created_at: DateTime<Utc>,
     pub locale: Locale,
-    pub user_agent: Option<String>,
     pub duration: i32,
+    pub user_agent: Option<String>,
 }
 
 #[typeshare]
