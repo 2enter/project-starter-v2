@@ -13,6 +13,7 @@ uuid = { workspace = true }
 axum = { workspace = true }
 http = { workspace = true }
 rand = { workspace = true }
+axum_typed_multipart = { workspace = true }
 regex = "1.11.2"
 typeshare = "1.0.4"
 project-root = "0.2.2"
