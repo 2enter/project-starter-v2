@@ -6,11 +6,27 @@ class SysState {
 	errorMessage = $state<string | null>(null);
 	pageNum = $state<number>(0);
 	dialog = $state<HTMLDialogElement>();
+	startTime = $state<number>();
 
 	popError = (message: string) => {
 		this.errorMessage = message;
 		if (!this.dialog) return;
 		this.dialog.showModal();
+	};
+
+	closeError = () => {
+		this.errorMessage = null;
+		if (!this.dialog) return;
+		this.dialog.close();
+	};
+
+	startTimer = () => {
+		this.startTime = Date.now();
+	};
+
+	getDuration = () => {
+		if (!this.startTime) return 0;
+		return Date.now() - this.startTime;
 	};
 
 	startProcess = () => {
@@ -19,12 +35,6 @@ class SysState {
 
 	endProcess = () => {
 		this.processing = false;
-	};
-
-	closeError = () => {
-		this.errorMessage = null;
-		if (!this.dialog) return;
-		this.dialog.close();
 	};
 
 	navigate = (step?: any) => {
