@@ -50,7 +50,6 @@ impl<T: Serialize, K: Display> From<Result<T, K>> for ApiResponse<T> {
     }
 }
 
-#[allow(unused)]
 impl ApiError {
     pub fn new(code: StatusCode) -> Self {
         Self {
@@ -76,7 +75,6 @@ impl ApiError {
     }
 }
 
-#[allow(unused)]
 impl<T> ApiResponse<T>
 where
     T: Serialize,
