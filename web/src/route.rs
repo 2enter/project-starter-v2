@@ -15,7 +15,7 @@ pub fn get_route(app_state: AppState) -> Router {
                 .route("/health", get(health::get))
                 .layer(DefaultBodyLimit::max(5000000))
                 .nest(
-                    "/soul",
+                    "/interaction",
                     Router::new()
                         .route("/{id}", get(interaction::get_by_id))
                         .route("/", post(interaction::post)),
