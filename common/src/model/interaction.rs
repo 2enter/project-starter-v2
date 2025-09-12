@@ -25,28 +25,6 @@ pub struct Interaction {
 pub struct InteractionInput {
     pub locale: Locale,
     pub duration: i32,
-    #[serde(skip)]
-    pub user_agent: Option<String>,
     #[serde(skip)] // comment this line when generating types with typeshare
     pub file: Bytes,
-}
-
-impl InteractionInput {
-    pub async fn insert_to_db(self, pool: &PgPool) -> sqlx::Result<Interaction> {
-        sqlx::query_as("INSERT INTO interaction (locale, user_agent, duration) VALUES ($1, $2, $3) RETURNING *")
-            .bind(self.locale)
-            .bind(self.user_agent)
-            .bind(self.duration)
-            .fetch_one(pool)
-            .await
-    }
-}
-
-impl Interaction {
-    pub async fn get_by_id(id: Uuid, pool: &PgPool) -> sqlx::Result<Self> {
-        sqlx::query_as("SELECT * FROM interaction WHERE id = $1")
-            .bind(id)
-            .fetch_one(pool)
-            .await
-    }
 }
