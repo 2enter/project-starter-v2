@@ -12,11 +12,12 @@ export interface Interaction {
 	createdAt: Date;
 	locale: Locale;
 	userAgent?: string;
+	duration: number;
 }
 
 export interface InteractionInput {
 	locale: Locale;
-	file: Blob;
+	duration: number;
 }
 
 export type WsMsg = 
