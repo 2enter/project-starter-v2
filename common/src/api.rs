@@ -75,6 +75,7 @@ impl ApiError {
     }
 }
 
+#[allow(unused)]
 impl<T> ApiResponse<T>
 where
     T: Serialize,
