@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS interaction (
   created_at TIMESTAMPTZ DEFAULT now(),
   locale locale NOT NULL,
   user_agent TEXT,
-  duration INTEGER
+  duration INTEGER DEFAULT 0
 );
 
 
