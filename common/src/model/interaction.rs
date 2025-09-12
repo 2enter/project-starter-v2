@@ -15,6 +15,7 @@ pub struct Interaction {
     pub created_at: DateTime<Utc>,
     pub locale: Locale,
     pub user_agent: Option<String>,
+    pub duration: i32,
 }
 
 #[typeshare]
@@ -23,6 +24,7 @@ pub struct Interaction {
 #[try_from_multipart(rename_all = "camelCase")]
 pub struct InteractionInput {
     pub locale: Locale,
+    pub duration: i32,
     #[serde(skip)]
     pub user_agent: Option<String>,
     #[serde(skip)] // comment this line when generating types with typeshare
@@ -31,9 +33,10 @@ pub struct InteractionInput {
 
 impl InteractionInput {
     pub async fn insert_to_db(self, pool: &PgPool) -> sqlx::Result<Interaction> {
-        sqlx::query_as("INSERT INTO interaction (locale, user_agent) VALUES ($1, $2) RETURNING *")
+        sqlx::query_as("INSERT INTO interaction (locale, user_agent, duration) VALUES ($1, $2, $3) RETURNING *")
             .bind(self.locale)
             .bind(self.user_agent)
+            .bind(self.duration)
             .fetch_one(pool)
             .await
     }
