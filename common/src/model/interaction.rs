@@ -2,7 +2,7 @@ use crate::model::Locale;
 use axum::body::Bytes;
 use axum_typed_multipart::TryFromMultipart;
 use chrono::{DateTime, Utc};
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 use sqlx::{PgPool, prelude::FromRow};
 use typeshare::typeshare;
 use uuid::Uuid;
@@ -18,14 +18,14 @@ pub struct Interaction {
 }
 
 #[typeshare]
-#[derive(Deserialize, Debug, TryFromMultipart)]
+#[derive(Debug, TryFromMultipart, Serialize)]
 #[serde(rename_all = "camelCase")]
 #[try_from_multipart(rename_all = "camelCase")]
 pub struct InteractionInput {
     pub locale: Locale,
     #[serde(skip)]
     pub user_agent: Option<String>,
-    #[serde(skip)]
+    #[serde(skip)] // comment this line when generating types with typeshare
     pub file: Bytes,
 }
 
