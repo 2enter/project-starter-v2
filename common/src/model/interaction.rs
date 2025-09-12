@@ -3,7 +3,7 @@ use axum::body::Bytes;
 use axum_typed_multipart::TryFromMultipart;
 use chrono::{DateTime, Utc};
 use serde::Serialize;
-use sqlx::{PgPool, prelude::FromRow};
+use sqlx::FromRow;
 use typeshare::typeshare;
 use uuid::Uuid;
 
