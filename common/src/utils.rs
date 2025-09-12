@@ -1,5 +1,6 @@
 use async_std::task::sleep;
 use project_root::get_project_root;
+use sqlx::PgPool;
 use std::{env, ops::Range, time::Duration};
 
 pub fn get_env(key: &str) -> String {
@@ -32,4 +33,11 @@ pub async fn async_rand_sleep(range: Range<u32>) {
         (rand::random::<f32>() * dist + range.start as f32) as u64,
     ))
     .await;
+}
+
+pub async fn get_pg_pool() -> PgPool {
+    let database_url = get_env("DATABASE_URL").replace("?sslmode=disable", "");
+    PgPool::connect(&database_url)
+        .await
+        .expect("Failed to connect to database")
 }

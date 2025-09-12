@@ -1,5 +1,6 @@
 use axum::Json;
 use axum::response::{IntoResponse, Response};
+use axum_typed_multipart::TypedMultipartError;
 use http::StatusCode;
 use regex::Regex;
 use serde::{Deserialize, Serialize};
@@ -126,5 +127,11 @@ where
 {
     fn into_response(self) -> Response {
         Json(self).into_response()
+    }
+}
+
+impl From<TypedMultipartError> for ApiError {
+    fn from(err: TypedMultipartError) -> Self {
+        ApiError::new_with_details(StatusCode::BAD_REQUEST, err.to_string(), None)
     }
 }
