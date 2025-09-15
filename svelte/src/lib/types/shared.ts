@@ -11,8 +11,8 @@ export interface Interaction {
 	id: string;
 	createdAt: Date;
 	locale: Locale;
-	userAgent?: string;
 	duration: number;
+	userAgent?: string;
 }
 
 export interface InteractionInput {
@@ -21,8 +21,7 @@ export interface InteractionInput {
 }
 
 export type WsMsg = 
-	| { type: "string", data: string }
-	| { type: "number", data: number };
+	| { type: "interaction", data: Interaction };
 
 /**
  * Custom JSON reviver and replacer functions for dynamic data transformation
