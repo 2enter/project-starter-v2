@@ -1,12 +1,11 @@
 use crate::api::response::ApiResponse;
-use axum::Json;
 use axum::response::{IntoResponse, Response};
 use axum_typed_multipart::TypedMultipartError;
 use http::StatusCode;
 use regex::Regex;
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Default)]
 pub struct ApiError {
     pub code: u16,
     pub message: String,
@@ -23,45 +22,43 @@ fn gen_message(code: StatusCode) -> String {
         .to_string()
 }
 
+impl From<u16> for ApiError {
+    fn from(code: u16) -> Self {
+        let code = StatusCode::from_u16(code).unwrap();
+        Self::from(code)
+    }
+}
+
+impl From<StatusCode> for ApiError {
+    fn from(code: StatusCode) -> Self {
+        Self {
+            code: code.as_u16(),
+            message: gen_message(code),
+            ..Default::default()
+        }
+    }
+}
+
 impl ApiError {
-    pub fn new(code: StatusCode) -> Self {
-        Self {
-            code: code.as_u16(),
-            message: gen_message(code),
-            details: None,
-            hint: None,
-        }
+    pub fn with_details(mut self, details: String) -> Self {
+        self.details = Some(details);
+        self
     }
 
-    pub fn from_u16(code_number: u16) -> Self {
-        let code = StatusCode::from_u16(code_number).unwrap();
-        Self::new(code)
-    }
-
-    pub fn new_with_details(code: StatusCode, details: String, hint: Option<String>) -> Self {
-        Self {
-            code: code.as_u16(),
-            message: gen_message(code),
-            details: Some(details),
-            hint,
-        }
+    pub fn with_hint(mut self, hint: String) -> Self {
+        self.hint = Some(hint);
+        self
     }
 }
 
 impl IntoResponse for ApiError {
     fn into_response(self) -> Response {
-        let status_code = StatusCode::from_u16(self.code).unwrap();
-        Json(ApiResponse::<String>::new_error_with_details(
-            status_code,
-            &self.message,
-            None,
-        ))
-        .into_response()
+        ApiResponse::<String>::Error(self).into_response()
     }
 }
 
 impl From<TypedMultipartError> for ApiError {
     fn from(err: TypedMultipartError) -> Self {
-        ApiError::new_with_details(StatusCode::BAD_REQUEST, err.to_string(), None)
+        ApiError::from(StatusCode::BAD_REQUEST).with_details(err.to_string())
     }
 }
