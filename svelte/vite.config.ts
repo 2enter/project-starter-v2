@@ -5,8 +5,8 @@ import { defineConfig } from 'vite';
 import dotenv from 'dotenv';
 
 dotenv.config({ path: '../.env' });
-const { BACKEND_HOST, BACKEND_PORT } = process.env;
-const API_BASE_URL = `${BACKEND_HOST ?? 'localhost'}:${BACKEND_PORT ?? 3000}`;
+const { BACKEND_HOST } = process.env;
+const API_BASE_URL = `${BACKEND_HOST ?? 'localhost'}:8080`;
 console.log('API base URL: ', API_BASE_URL);
 
 export default defineConfig({
