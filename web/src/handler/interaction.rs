@@ -6,7 +6,7 @@ use axum::{
 use axum_typed_multipart::BaseMultipart;
 use common::{
     api::*,
-    model::{Interaction, InteractionInput},
+    model::{Interaction, InteractionInput, WsMsg},
 };
 use uuid::Uuid;
 
@@ -23,7 +23,7 @@ pub async fn post(
         None
     };
 
-    let result: ApiResult<_> = sqlx::query_as(
+    let result: ApiResult<Interaction> = sqlx::query_as(
         "INSERT INTO interaction (locale, user_agent, duration) VALUES ($1, $2, $3) RETURNING *",
     )
     .bind(interaction.locale)
@@ -32,6 +32,10 @@ pub async fn post(
     .fetch_one(&app_state.pool)
     .await
     .into();
+
+    if let ApiResult::Ok(msg) = result.clone() {
+        let _ = app_state.ws_broadcast(WsMsg::Interaction(msg.clone()));
+    }
 
     result.into()
 }
