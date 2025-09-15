@@ -18,6 +18,7 @@ export interface Interaction {
 export interface InteractionInput {
 	locale: Locale;
 	duration: number;
+	file: Blob;
 }
 
 export type WsMsg = 
