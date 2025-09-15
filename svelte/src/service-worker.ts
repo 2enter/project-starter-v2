@@ -47,10 +47,11 @@ self.addEventListener('fetch', (event) => {
 		// try the network first
 		try {
 			const response = await fetch(event.request);
-			const isNotExtension = url.protocol === 'http:';
+			const isHttp = ['http:', 'https:'].includes(url.protocol);
+			const isApi = url.pathname.startsWith('/api') || url.pathname.startsWith('/ws');
 			const isSuccess = response.status === 200;
 
-			if (isNotExtension && isSuccess) {
+			if (isHttp && isSuccess && !isApi) {
 				cache.put(event.request, response.clone());
 			}
 
