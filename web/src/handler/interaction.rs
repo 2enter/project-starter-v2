@@ -5,7 +5,7 @@ use axum::{
 };
 use axum_typed_multipart::BaseMultipart;
 use common::{
-    api::{ApiError, ApiResponse},
+    api::*,
     model::{Interaction, InteractionInput},
 };
 use uuid::Uuid;
@@ -16,14 +16,14 @@ pub async fn post(
     BaseMultipart {
         data: interaction, ..
     }: BaseMultipart<InteractionInput, ApiError>,
-) -> Json<ApiResponse<Interaction>> {
+) -> Json<ApiResult<Interaction>> {
     let user_agent = if let Some(user_agent) = header_map.get(header::USER_AGENT) {
         user_agent.to_str().ok().map(str::to_owned)
     } else {
         None
     };
 
-    let result: ApiResponse<_> = sqlx::query_as(
+    let result: ApiResult<_> = sqlx::query_as(
         "INSERT INTO interaction (locale, user_agent, duration) VALUES ($1, $2, $3) RETURNING *",
     )
     .bind(interaction.locale)
@@ -39,8 +39,8 @@ pub async fn post(
 pub async fn get_by_id(
     State(app_state): State<AppState>,
     Path(id): Path<Uuid>,
-) -> Json<ApiResponse<Interaction>> {
-    let result: ApiResponse<_> = sqlx::query_as("SELECT * FROM interaction WHERE id = $1")
+) -> Json<ApiResult<Interaction>> {
+    let result: ApiResult<_> = sqlx::query_as("SELECT * FROM interaction WHERE id = $1")
         .bind(id)
         .fetch_one(&app_state.pool)
         .await

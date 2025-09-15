@@ -1,4 +1,4 @@
-use crate::api::response::ApiResponse;
+use crate::api::response::ApiResult;
 use axum::response::{IntoResponse, Response};
 use axum_typed_multipart::TypedMultipartError;
 use http::StatusCode;
@@ -53,7 +53,7 @@ impl ApiError {
 
 impl IntoResponse for ApiError {
     fn into_response(self) -> Response {
-        ApiResponse::<String>::Error(self).into_response()
+        ApiResult::<String>::Err(self).into_response()
     }
 }
 

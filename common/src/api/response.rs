@@ -7,49 +7,49 @@ use serde_json::{Value, json};
 use std::fmt::Display;
 
 #[derive(Serialize, Deserialize, Debug)]
-pub enum ApiResponse<T>
+pub enum ApiResult<T>
 where
     T: Serialize,
 {
-    Success(T),
-    Error(ApiError),
+    Ok(T),
+    Err(ApiError),
 }
 
-impl<T: Serialize, K: Display> From<Result<T, K>> for ApiResponse<T> {
+/// Convert Result into ApiResponse
+impl<T: Serialize, K: Display> From<Result<T, K>> for ApiResult<T> {
     fn from(value: Result<T, K>) -> Self {
         match value {
-            Ok(value) => ApiResponse::Success(value),
-            Err(error) => ApiResponse::Error(
+            Ok(value) => ApiResult::Ok(value),
+            Err(error) => ApiResult::Err(
                 ApiError::from(StatusCode::INTERNAL_SERVER_ERROR).with_details(format!("{error}")),
             ),
         }
     }
 }
 
-impl<T> ApiResponse<T>
+impl<T> ApiResult<T>
 where
     T: Serialize,
 {
     pub fn new_success(data: T) -> Self {
-        Self::Success(data)
+        Self::Ok(data)
     }
 
     pub fn new_error<K>(code: K) -> Self
     where
         ApiError: From<K>,
     {
-        Self::Error(ApiError::from(code))
+        Self::Err(ApiError::from(code))
     }
 
     /// Build the response into json value:
-    /// ```
+    /// ```json
+    /// // When Err
     /// {
     ///     "data": null,
     ///     "error": ApiError
     /// }
-    /// ```
-    /// or
-    /// ```
+    /// // When Ok
     /// {
     ///     "data": T,
     ///     "error": null
@@ -57,13 +57,13 @@ where
     /// ```
     pub fn build(self) -> Json<Value> {
         match self {
-            Self::Success(data) => Json(json!({"data": data, "error": null})),
-            Self::Error(error) => Json(json!({"data": null, "error": error})),
+            Self::Ok(data) => Json(json!({"data": data, "error": null})),
+            Self::Err(error) => Json(json!({"data": null, "error": error})),
         }
     }
 }
 
-impl<T> IntoResponse for ApiResponse<T>
+impl<T> IntoResponse for ApiResult<T>
 where
     T: Serialize,
 {
