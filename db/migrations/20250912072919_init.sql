@@ -15,10 +15,10 @@ CREATE INDEX if NOT EXISTS interaction_created_at_idx ON interaction (created_at
 
 
 -- migrate:down
-DROP TYPE IF EXISTS locale;
-
-
 DROP TABLE IF EXISTS interaction;
+
+
+DROP TYPE IF EXISTS locale;
 
 
 DROP INDEX IF EXISTS interaction_created_at_idx;
