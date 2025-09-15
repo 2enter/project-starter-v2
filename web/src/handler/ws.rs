@@ -42,7 +42,7 @@ async fn handle_socket(socket: WebSocket, app_state: AppState, user_agent: Strin
         let Message::Text(text) = msg else {
             if let Message::Close(Some(_)) = msg {
                 tracing::info!("Client disconnected");
-                continue;
+                break;
             }
             continue;
         };
