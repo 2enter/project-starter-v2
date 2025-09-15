@@ -41,6 +41,20 @@ where
         Self::Error(ApiError::from(code))
     }
 
+    /// Build the response into json value:
+    /// ```
+    /// {
+    ///     "data": null,
+    ///     "error": ApiError
+    /// }
+    /// ```
+    /// or
+    /// ```
+    /// {
+    ///     "data": T,
+    ///     "error": null
+    /// }
+    /// ```
     pub fn build(self) -> Json<Value> {
         match self {
             Self::Success(data) => Json(json!({"data": data, "error": null})),
