@@ -1,7 +1,7 @@
-use async_std::task::sleep;
 use project_root::get_project_root;
 use sqlx::PgPool;
 use std::{env, ops::Range, time::Duration};
+use tokio::time::sleep;
 
 pub fn get_env(key: &str) -> String {
     env::var(key).unwrap_or_else(|e| {
