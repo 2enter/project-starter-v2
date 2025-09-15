@@ -2,13 +2,13 @@ use crate::model::Locale;
 use axum::body::Bytes;
 use axum_typed_multipart::TryFromMultipart;
 use chrono::{DateTime, Utc};
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use sqlx::FromRow;
 use typeshare::typeshare;
 use uuid::Uuid;
 
 #[typeshare]
-#[derive(Serialize, Debug, FromRow, Clone)]
+#[derive(Serialize, Deserialize, Debug, FromRow, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct Interaction {
     pub id: Uuid,
