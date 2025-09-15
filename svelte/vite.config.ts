@@ -1,8 +1,9 @@
+import dotenv from 'dotenv';
+import mkcert from 'vite-plugin-mkcert';
 import { paraglideVitePlugin } from '@inlang/paraglide-js';
 import tailwindcss from '@tailwindcss/vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
-import dotenv from 'dotenv';
 
 dotenv.config({ path: '../.env' });
 const { BACKEND_HOST } = process.env;
@@ -17,10 +18,12 @@ export default defineConfig({
 			project: './project.inlang',
 			outdir: './src/lib/paraglide',
 			strategy: ['url', 'cookie', 'baseLocale']
-		})
+		}),
+		mkcert()
 	],
 	server: {
 		host: '0.0.0.0',
+		https: {},
 		proxy: {
 			'/api': {
 				target: `http://${API_BASE_URL}`,
