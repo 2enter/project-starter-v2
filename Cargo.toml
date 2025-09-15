@@ -1,6 +1,5 @@
 [workspace]
 members = ["web", "common"]
-resovler = "2"
 
 [workspace.dependencies]
 common = { path = "./common" }
