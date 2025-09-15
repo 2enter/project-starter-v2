@@ -1,4 +1,7 @@
 -- migrate:up
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+
 CREATE TYPE locale AS ENUM('en', 'zh-tw');
 
 
@@ -16,6 +19,9 @@ CREATE INDEX if NOT EXISTS interaction_created_at_idx ON interaction (created_at
 
 -- migrate:down
 DROP TABLE IF EXISTS interaction;
+
+
+DROP EXTENSION IF EXISTS pgcrypto;
 
 
 DROP TYPE IF EXISTS locale;
