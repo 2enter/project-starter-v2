@@ -1,0 +1,35 @@
+type: http_request
+model: http_request
+id: rq_s8pqJxNTMo
+createdAt: 2025-09-15T14:08:09.005668
+updatedAt: 2025-09-15T14:10:19.030898
+workspaceId: wk_gHw6EPFBVz
+folderId: fl_vFYSJtr5kV
+authentication: {}
+authenticationType: null
+body:
+  form:
+  - enabled: true
+    id: F2QFRSIDZX
+    name: locale
+    value: en
+  - enabled: true
+    id: iPfY8c8u5F
+    name: duration
+    value: '30'
+  - enabled: true
+    id: CGWpKRnmrx
+    name: ''
+    value: ''
+bodyType: multipart/form-data
+description: ''
+headers:
+- enabled: true
+  name: Content-Type
+  value: multipart/form-data
+  id: 4JvWGxCWS7
+method: POST
+name: /interaction
+sortPriority: 0.0
+url: ${[ API_BASE ]}/interaction
+urlParameters: []

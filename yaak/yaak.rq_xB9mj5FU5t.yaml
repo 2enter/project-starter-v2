@@ -1,0 +1,31 @@
+type: http_request
+model: http_request
+id: rq_xB9mj5FU5t
+createdAt: 2025-09-15T14:10:35.049255
+updatedAt: 2025-09-15T14:11:09.565564
+workspaceId: wk_gHw6EPFBVz
+folderId: fl_vFYSJtr5kV
+authentication: {}
+authenticationType: null
+body:
+  form:
+  - enabled: true
+    id: F2QFRSIDZX
+    name: locale
+    value: en
+  - enabled: true
+    id: iPfY8c8u5F
+    name: duration
+    value: '30'
+  - enabled: true
+    id: CGWpKRnmrx
+    name: ''
+    value: ''
+bodyType: null
+description: ''
+headers: []
+method: GET
+name: /interaction/{id}
+sortPriority: 0.001
+url: ${[ API_BASE ]}/interaction/fa9f146f-e021-496f-a48a-6f307dda736f
+urlParameters: []

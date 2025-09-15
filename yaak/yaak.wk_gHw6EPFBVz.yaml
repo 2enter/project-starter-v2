@@ -1,0 +1,14 @@
+type: workspace
+model: workspace
+id: wk_gHw6EPFBVz
+createdAt: 2025-09-15T14:06:41.128399
+updatedAt: 2025-09-15T14:06:41.128400
+authentication: {}
+authenticationType: null
+description: ''
+headers: []
+name: Project Starter V2
+encryptionKeyChallenge: null
+settingValidateCertificates: true
+settingFollowRedirects: true
+settingRequestTimeout: 0

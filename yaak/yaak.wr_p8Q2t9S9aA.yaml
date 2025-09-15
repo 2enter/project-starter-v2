@@ -1,0 +1,16 @@
+type: websocket_request
+model: websocket_request
+id: wr_p8Q2t9S9aA
+createdAt: 2025-09-15T14:09:24.083902
+updatedAt: 2025-09-15T14:10:30.222663
+workspaceId: wk_gHw6EPFBVz
+folderId: null
+authentication: {}
+authenticationType: null
+description: ''
+headers: []
+message: ''
+name: WebSocket
+sortPriority: -1757945300000.0
+url: ws://${[ ORIGIN ]}:${[ PORT ]}/ws
+urlParameters: []
