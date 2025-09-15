@@ -68,6 +68,13 @@ where
     T: Serialize,
 {
     fn into_response(self) -> Response {
-        self.build().into_response()
+        match &self {
+            Self::Ok(_) => (StatusCode::OK, self.build()).into_response(),
+            Self::Err(err) => {
+                let status =
+                    StatusCode::from_u16(err.code).unwrap_or(StatusCode::INTERNAL_SERVER_ERROR);
+                (status, self.build()).into_response()
+            }
+        }
     }
 }
