@@ -33,7 +33,8 @@ export default defineConfig({
 			'/ws': {
 				target: `ws://${API_BASE_URL}`,
 				changeOrigin: true,
-				secure: false
+				secure: false,
+				ws: true
 			}
 		}
 	}
