@@ -7,7 +7,6 @@ use axum::response::IntoResponse;
 use axum_extra::{TypedHeader, headers};
 use common::model::WsMsg;
 use futures::{SinkExt, StreamExt};
-use tokio::sync::broadcast::Sender;
 use tracing::debug;
 
 pub async fn handler(
@@ -65,15 +64,4 @@ async fn handle_socket(socket: WebSocket, app_state: AppState, user_agent: Strin
             }
         }
     }
-}
-
-pub fn ws_broadcast(msg: WsMsg, sender: &Sender<String>) -> Result<(), anyhow::Error> {
-    let clients = sender.receiver_count();
-    tracing::info!("Broadcasting to {} clients", clients);
-    if clients == 0 {
-        return Err(anyhow::anyhow!("No clients to broadcast to"));
-    }
-    let message = serde_json::to_string(&msg)?;
-    sender.send(message)?;
-    Ok(())
 }
