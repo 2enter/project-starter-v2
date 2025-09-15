@@ -50,8 +50,12 @@ async fn handle_socket(socket: WebSocket, app_state: AppState, user_agent: Strin
         tracing::info!("Received WS message: {text:?}");
 
         // parse text into WSMsg
-        let Ok(ws_msg) = serde_json::from_str::<WsMsg>(text.to_string().as_str()) else {
-            continue;
+        let ws_msg = match serde_json::from_str::<WsMsg>(&text) {
+            Ok(v) => v,
+            Err(e) => {
+                debug!("invalid WS message: {e}");
+                continue;
+            }
         };
 
         // use the WSMsg instance
