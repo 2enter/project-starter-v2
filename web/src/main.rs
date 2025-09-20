@@ -1,8 +1,8 @@
 mod config;
 mod handler;
-mod init;
 mod route;
 mod state;
+mod tls;
 
 use std::net::SocketAddr;
 
@@ -13,7 +13,14 @@ use crate::{route::get_route, state::AppState};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    init::tracing();
+    common::utils::init_tracing(vec![
+        "web=debug",
+        "common=debug",
+        "tower_http=debug",
+        "tokio=debug",
+        "axum=debug",
+        "sqlx=debug",
+    ]);
 
     let server_config = ServerConfig::new();
     let pool = get_pg_pool().await;
@@ -25,8 +32,8 @@ async fn main() -> anyhow::Result<()> {
 
     match server_config.https {
         true => {
-            init::tls::init();
-            let tls_config = init::tls::get_axum_config(&server_config).await;
+            tls::init();
+            let tls_config = tls::get_axum_config(&server_config).await;
             axum_server::bind_rustls(socket_addr, tls_config)
                 .serve(app.into_make_service())
                 .await?;
