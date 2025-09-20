@@ -21,13 +21,15 @@ impl ServerConfig {
         // But for projects that hosts server across local network, it helps clients like Unreal Engine to locate the server easily.
         let host = get_env("BACKEND_HOST");
         let https = false;
-        let http_scheme = if https { "https" } else { "http" };
 
-        colored::control::set_override(true);
-        info!("Configuration initialized");
-        info!("Remote URL \t\t{:#}://{host}:{port}/", http_scheme);
+        info!("------Configuration initialized------");
+        info!(
+            "Remote URL \t\t{:#}://{host}:{port}/",
+            if https { "https" } else { "http" }
+        );
         info!("Database URL \t{database_url}");
         info!("Root directory \t{root_dir}");
+        info!("-------------------------------------");
 
         Self {
             https,
