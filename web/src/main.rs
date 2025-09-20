@@ -4,23 +4,25 @@ mod route;
 mod state;
 mod tls;
 
-use std::net::SocketAddr;
-
-use common::utils::get_pg_pool;
+use common::utils::{get_pg_pool, init_tracing};
 use config::ServerConfig;
+use std::net::SocketAddr;
 
 use crate::{route::get_route, state::AppState};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    common::utils::init_tracing(vec![
-        "web=debug",
-        "common=debug",
-        "tower_http=debug",
-        "tokio=debug",
-        "axum=debug",
-        "sqlx=debug",
-    ]);
+    let _guard = init_tracing(
+        vec![
+            "web=debug",
+            "common=debug",
+            "tower_http=debug",
+            "tokio=debug",
+            "axum=debug",
+            "sqlx=debug",
+        ],
+        true,
+    );
 
     let server_config = ServerConfig::new();
     let pool = get_pg_pool().await;
