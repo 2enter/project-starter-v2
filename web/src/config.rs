@@ -1,4 +1,5 @@
 use common::utils::{get_env, get_root_dir};
+use tracing::info;
 
 #[allow(dead_code)]
 #[derive(Clone, Debug)]
@@ -14,16 +15,22 @@ pub struct ServerConfig {
 impl ServerConfig {
     pub fn new() -> Self {
         let database_url = get_env("DATABASE_URL").replace("?sslmode=disable", "");
-        let port = get_env("BACKEND_PORT");
-        let host = get_env("BACKEND_HOST");
         let root_dir = get_root_dir();
+        let port = get_env("BACKEND_PORT");
+        // In many case we don't need this.
+        // But for projects that hosts server across local network, it helps clients like Unreal Engine to locate the server easily.
+        let host = get_env("BACKEND_HOST");
+        let https = false;
 
-        println!("configuration initialized: {host}:{port}, db: {database_url},  root: {root_dir}");
+        info!(
+            "\n------Configuration initialized-------\nRemote URL\t{}://{host}:{port}\nDatabase URL\t{database_url}\nRoot directory\t{root_dir}",
+            if https { "https" } else { "http" }
+        );
 
         Self {
-            https: false,
+            https,
             database_url,
-            port: port.parse().unwrap_or(3000),
+            port: port.parse().unwrap_or(8080),
             host,
             root_dir,
         }

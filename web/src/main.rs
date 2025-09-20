@@ -20,8 +20,8 @@ async fn main() -> anyhow::Result<()> {
     let app_state = AppState::new(pool, server_config.clone());
     let app = get_route(app_state);
 
-    // 0.0.0.0:8080
-    let socket_addr = SocketAddr::from(([0; 4], 8080));
+    // 0.0.0.0:<BACKEND_PORT>
+    let socket_addr = SocketAddr::from(([0; 4], server_config.port));
 
     match server_config.https {
         true => {

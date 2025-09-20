@@ -9,6 +9,7 @@ pub struct AppState {
     pub pool: PgPool,
     pub server_config: ServerConfig,
     pub ws_sender: broadcast::Sender<String>,
+    #[allow(unused)]
     pub mutable_data: Arc<Mutex<Option<i32>>>,
 }
 
