@@ -7,16 +7,6 @@ class SysState {
 	pageNum = $state<number>(0);
 	dialog = $state(new Dialog());
 	timer = $state(new Timer());
-	startTime = $state<number>();
-
-	startTimer = () => {
-		this.startTime = Date.now();
-	};
-
-	getDuration = () => {
-		if (!this.startTime) return 0;
-		return Date.now() - this.startTime;
-	};
 
 	startProcess = () => {
 		this.processing = true;
