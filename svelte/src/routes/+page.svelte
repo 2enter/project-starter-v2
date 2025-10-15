@@ -26,6 +26,9 @@
 	});
 </script>
 
-<div in:fade={{ duration: 700 }} class="center-content overflow-hidden bg-contain bg-center">
+<div
+	in:fade={{ duration: 700 }}
+	class="full-screen center-content overflow-hidden bg-contain bg-center"
+>
 	<Page />
 </div>
