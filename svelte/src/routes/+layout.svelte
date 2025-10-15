@@ -1,7 +1,7 @@
 <script lang="ts">
 	import '../app.css';
 	import favicon from '$lib/assets/favicon.png';
-	import { m } from '@/paraglide/messages';
+	// import { m } from '@/paraglide/messages';
 	import { locales, localizeHref } from '@/paraglide/runtime';
 	import { setInputState, setSysState } from '@/states';
 	import { page } from '$app/state';
@@ -18,13 +18,13 @@
 
 {@render children?.()}
 
-<dialog bind:this={sysState.dialog} class="modal modal-middle">
+<dialog bind:this={sysState.dialog.dom} class="modal modal-middle">
 	<div class="modal-box">
-		<h1>{m.error()}</h1>
-		<p>{sysState.errorMessage}</p>
+		<h1>{@html sysState.dialog.header}</h1>
+		<p>{@html sysState.dialog.message}</p>
 		<div class="modal-action">
 			<form method="dialog">
-				<button class="btn btn-secondary" onclick={sysState.closeError}> Close</button>
+				<button class="btn btn-secondary" onclick={sysState.dialog.close}> Close</button>
 			</form>
 		</div>
 	</div>

@@ -3,22 +3,9 @@ import { MAX_PAGE_NUM } from '@/pages';
 
 class SysState {
 	processing = $state(false);
-	errorMessage = $state<string | null>(null);
 	pageNum = $state<number>(0);
-	dialog = $state<HTMLDialogElement>();
+	dialog = $state(new Dialog());
 	startTime = $state<number>();
-
-	popError = (message: string) => {
-		this.errorMessage = message;
-		if (!this.dialog) return;
-		this.dialog.showModal();
-	};
-
-	closeError = () => {
-		this.errorMessage = null;
-		if (!this.dialog) return;
-		this.dialog.close();
-	};
 
 	startTimer = () => {
 		this.startTime = Date.now();
@@ -55,6 +42,44 @@ class SysState {
 	routeTo = (num: number) => {
 		if (num === this.pageNum) return;
 		setTimeout(() => (this.pageNum = num));
+	};
+}
+
+class Dialog {
+	dom?: HTMLDialogElement;
+	message = $state<string>();
+	header = $state<string>();
+	closeBtnText = $state<string>();
+	opened = $state(false);
+	onclose = () => {};
+
+	pop = (args: {
+		message: string;
+		header: string;
+		closeBtnText?: string;
+		onclose?: () => void;
+	}) => {
+		this.message = args.message;
+		this.header = args.header;
+		this.closeBtnText = args.closeBtnText ?? '關閉 Close';
+
+		if (args.onclose) this.onclose = args.onclose;
+
+		this.dom?.showModal();
+		this.opened = true;
+	};
+
+	close = () => {
+		if (!this.dom) return;
+		this.dom.close();
+		this.onclose();
+
+		this.message = undefined;
+		this.header = undefined;
+		this.closeBtnText = undefined;
+		this.onclose = () => {};
+
+		this.opened = false;
 	};
 }
 
