@@ -1,10 +1,12 @@
 import { getContext, setContext } from 'svelte';
 import { MAX_PAGE_NUM } from '@/pages';
+import moment from 'moment';
 
 class SysState {
 	processing = $state(false);
 	pageNum = $state<number>(0);
 	dialog = $state(new Dialog());
+	timer = $state(new Timer());
 	startTime = $state<number>();
 
 	startTimer = () => {
@@ -80,6 +82,27 @@ class Dialog {
 		this.onclose = () => {};
 
 		this.opened = false;
+	};
+}
+
+class Timer {
+	startTime = $state<number>();
+
+	start = () => {
+		this.startTime = Date.now();
+	};
+
+	get duration() {
+		if (!this.startTime) return 0;
+		return Date.now() - this.startTime;
+	}
+
+	get seconds() {
+		return Math.floor(this.duration / 1000);
+	}
+
+	formattedDuration = (format: string) => {
+		return moment(this.duration).format(format);
 	};
 }
 
