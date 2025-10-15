@@ -6,8 +6,8 @@ import { Dialog } from './dialog.svelte';
 class SysState {
 	processing = $state(false);
 	pageNum = $state<number>(0);
-	dialog = $state(new Dialog());
-	timer = $state(new Timer());
+	dialog = new Dialog();
+	timer = new Timer();
 
 	startProcess = () => {
 		this.processing = true;
