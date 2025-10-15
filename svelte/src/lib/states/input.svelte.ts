@@ -1,14 +1,17 @@
+import { Locale, type Interaction } from '@/types/shared';
 import { getContext, setContext } from 'svelte';
 
 class InputState {
-	result = $state<any>();
+	result = $state<Interaction>();
 
 	readonly submittable = $derived(true);
 
 	insertTestResultData = () => {
 		this.result = {
 			id: '86add349-c32d-48c2-bcd5-9b016044349f',
-			createdAt: new Date()
+			createdAt: new Date(),
+			locale: Locale.En,
+			duration: 10000
 			// add whatever you want
 		};
 
